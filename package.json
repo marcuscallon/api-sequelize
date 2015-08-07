@@ -1,0 +1,23 @@
+{
+  "name": "reach-sequelize",
+  "version": "0.0.1",
+  "description": "Sequelize service for reach-api",
+  "author": "kodemon <snapgravy@gmail.com> (https://github.com/kodemon/)",
+  "license": "MIT",
+  "keywords": [
+    "reach",
+    "reach-api",
+    "sequelize",
+    "database",
+    "sql"
+  ],
+  "dependencies": {
+    "mysql": "2.8.0",
+    "sequelize": "3.5.1"
+  },
+  "reach": {
+    "name": "sequelize",
+    "type": "service",
+    "main": "setup.js"
+  }
+}
