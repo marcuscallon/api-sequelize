@@ -28,7 +28,8 @@ module.exports = function (name, getModelSetup) {
    * @type     Object
    */
   SequelizeModel.prototype._schema = SequelizeModel._schema = sequelize.define(name, changeCase.objectKeys('toCamel', _model.schema), {
-    tableName : _model.table
+    tableName : _model.table,
+    paranoid  : _model.paranoid ? _model.paranoid : true
   });
 
   /**
