@@ -15,12 +15,12 @@ module.exports = function (name, getModelSetup) {
    */
   function SequelizeModel(data) {
     let attrs = this.getAttributes();
-    let self  = this;
-
     data = changeCase.objectKeys('toCamel', data);
-    attrs.forEach(function (key) {
-      self[key] = data.hasOwnProperty(key) ? data[key] : null;
-    });
+    for (let key in data) {
+      if (attrs.indexOf(key) !== -1) {
+        this[key] = data[key];
+      }
+    }
   }
 
   /**
@@ -210,7 +210,7 @@ module.exports = function (name, getModelSetup) {
     let attributes = this._schema.attributes;
     let result     = {};
     for (let key in attributes) {
-      if (!this.hasOwnProperty(key) || !this[key]) {
+      if (!this.hasOwnProperty(key)) {
         continue;
       }
       result[key] = this[key];
@@ -265,8 +265,9 @@ module.exports = function (name, getModelSetup) {
     let relations = {};
     if (options.include) {
       options.include.forEach(function (rel, indx) {
-        relations[rel.as] = rel.model;
-        rel.model = rel.model._schema;
+        let model             = Reach.model(rel.model);
+        relations[rel.as]     = model;
+        rel.model             = model._schema;
         options.include[indx] = rel;
       });
     }
