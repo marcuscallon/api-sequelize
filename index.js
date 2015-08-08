@@ -22,8 +22,7 @@ let sequelize = new Sequelize(config.database, config.username, config.password,
     maxIdleTime    : config.pool.idle
   },
   define : {
-    underscored : true,
-    paranoid    : true
+    underscored : true
   },
   logging : function (str) {
     if (config.debug) {
