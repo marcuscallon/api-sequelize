@@ -67,12 +67,9 @@ module.exports = function (name, getModelSetup) {
    */
   SequelizeModel.prototype.save = function *() {
     let result = yield this._schema.create(this._data());
-    let values = result.dataValues;
+    let values = changeCase.objectKeys('toCamel', result.dataValues);
     for (let key in values) {
-      let camelKey = changeCase.toCamel(key);
-      if (this.hasOwnProperty(camelKey)) {
-        this[camelKey] = values[key];
-      }
+      this[key] = values[key];
     }
   };
 
