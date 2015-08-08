@@ -16,8 +16,9 @@ let Query = module.exports = function query(options, schema) {
       result.where[key] = prepareValue(where[key], options[key]);
     }
   }
-  if (options.limit)  { result.limit  = Query.NUMBER(options.limit); }
-  if (options.offset) { result.offset = Query.NUMBER(options.offset); }
+  if (schema.include) { result.include = schema.include; }
+  if (options.limit)  { result.limit   = Query.NUMBER(options.limit); }
+  if (options.offset) { result.offset  = Query.NUMBER(options.offset); }
   return result;
 };
 
