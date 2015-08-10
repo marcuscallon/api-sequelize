@@ -3,6 +3,7 @@
 let Sequelize  = require('sequelize');
 let util       = require('util');
 let moment     = require('moment');
+let Relations  = require('./helpers').Relations;
 let sequelize  = Reach.service('sequelize');
 let changeCase = Reach.Helpers.Case;
 
@@ -44,7 +45,7 @@ module.exports = function (name, getModelSetup) {
    * @property _attributes
    * @type     Array
    */
-  SequelizeModel.prototype._attributes = _model.attributes;
+  SequelizeModel.prototype._attributes = SequelizeModel._attributes = [];
 
   /**
    * Attributes to remove before returning the model as JSON.
@@ -96,21 +97,19 @@ module.exports = function (name, getModelSetup) {
    * @return {Array}
    */
   SequelizeModel.find = function *(options) {
-    let relations = getRelations(options);
+    let relations = new Relations(SequelizeModel, options);
     let result    = yield this._schema.findAll(options);
     if (!result) {
       return null;
     }
-    let Model = this;
-    return result.reduce(function (store, value) {
-      let data = value.dataValues;
-      if (relations) {
-        for (let key in relations) {
-          data[key] = populateRelation(data[key], relations[key]);
-        }
+    for (let i = 0, len = result.length; i < len; i++) {
+      let data = result[i].dataValues;
+      if (relations.exists) {
+        relations.prepare(data);
       }
-      return store.concat(new Model(data));
-    }, []);
+      result[i] = new this(data);
+    }
+    return result;
   };
 
   /**
@@ -119,31 +118,35 @@ module.exports = function (name, getModelSetup) {
    * @return {SequelizeModel}
    */
   SequelizeModel.findOne = function *(options) {
-    let relations = getRelations(options);
+    let relations = new Relations(SequelizeModel, options);
     let result    = yield this._schema.findOne(options);
     if (!result) {
       return null;
     }
     let data = result.dataValues;
-    if (relations) {
-      for (let key in relations) {
-        data[key] = populateRelation(data[key], relations[key]);
-      }
+    if (relations.exists) {
+      relations.prepare(data);
     }
     return new this(data);
   };
 
   /**
    * @method findById
-   * @param  {Mixed} id
+   * @param  {Mixed}  id
+   * @param  {Object} [options]
    * @return {SequelizeModel}
    */
-  SequelizeModel.findById = function *(id) {
-    let result = yield this._schema.findById(id);
+  SequelizeModel.findById = function *(id, options) {
+    let relations = new Relations(SequelizeModel, options);
+    let result    = yield this._schema.findById(id, options);
     if (!result) {
       return null;
     }
-    return new this(result.dataValues);
+    let data = result.dataValues;
+    if (relations.exists) {
+      relations.prepare(data);
+    }
+    return new this(data);
   };
 
   /**
@@ -173,9 +176,10 @@ module.exports = function (name, getModelSetup) {
 
   /**
    * @method toJSON
+   * @param  {Array} [attributes]
    * @return {Object}
    */
-  SequelizeModel.prototype.toJSON = function () {
+  SequelizeModel.prototype.toJSON = function (attributes) {
     let attrs = this.getAttributes();
     let data  = {};
 
@@ -190,6 +194,14 @@ module.exports = function (name, getModelSetup) {
       for (let i = 0, len = this._blacklist.length; i < len; i++) {
         let key = this._blacklist[i];
         if (data.hasOwnProperty(key)) {
+          delete data[key];
+        }
+      }
+    }
+
+    if (util.isArray(attributes)) {
+      for (let key in data) {
+        if (attributes.indexOf(key) === -1) {
           delete data[key];
         }
       }
@@ -227,49 +239,6 @@ module.exports = function (name, getModelSetup) {
     }
     return changeCase.arrayKeys('toCamel', attrs); 
   };
-
-  /**
-   * @private
-   * @method populateRelation
-   * @param  {Mixed}    data
-   * @param  {Function} Model
-   * @return {Mixed}
-   */
-  function populateRelation(data, Model) {
-    if (!data) { return null; }
-    if (util.isArray(data)) {
-      for (let i = 0, len = data.length; i < len; i++) {
-        data[i] = new Model(data[i].dataValues);
-      } 
-    } else {
-      data = new Model(data.dataValues);
-    }
-    return data;
-  }
-
-  /**
-   * Extracts the relations from the options to create a key => value
-   * relational match before correcting the include model.
-   * @private
-   * @method getRelations
-   * @param  {Object} options
-   * @return {Object}
-   */
-  function getRelations(options) {
-    if (!options || !options.include) { 
-      return; 
-    }
-    let relations = {};
-    if (options.include) {
-      options.include.forEach(function (rel, indx) {
-        let model             = Reach.model(rel.model);
-        relations[rel.as]     = model;
-        rel.model             = model._schema;
-        options.include[indx] = rel;
-      });
-    }
-    return relations;
-  }
 
   return SequelizeModel;
 

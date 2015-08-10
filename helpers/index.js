@@ -10,3 +10,9 @@ let Helpers = module.exports = {};
  * @type     Function
  */
 Helpers.query = require('./query');
+
+/**
+ * @property Relations
+ * @type     Function
+ */
+Helpers.Relations = require('./relations');
