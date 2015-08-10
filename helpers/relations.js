@@ -17,10 +17,9 @@ let Relations = module.exports = function Relations(SequelizeModel, options) {
       let relation = options.include[i];
       let model    = Reach.model(relation.model);
 
-      this.store[relation]       = {};
-      this.store[relation].as    = relation.as;
-      this.store[relation].model = model;
-      this.store[relation].attr  = relation.attr || null;
+      this.store[relation.as]       = {};
+      this.store[relation.as].model = model;
+      this.store[relation.as].attr  = relation.attr || null;
 
       options.include[i].model = model._schema;
       SequelizeModel._attributes.push(relation.as);
@@ -49,7 +48,7 @@ Relations.prototype.store = {};
 Relations.prototype.prepare = function (data) {
   let relations = this.store;
   for (let key in relations) {
-    data[key] = populateRelation(data[relations[key].as], relations[key]);
+    data[key] = populateRelation(data[key], relations[key]);
   }
 };
 
