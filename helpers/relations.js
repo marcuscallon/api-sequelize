@@ -62,11 +62,16 @@ Relations.prototype.prepare = function (data) {
 function populateRelation(data, relation) {
   if (!data) { return null; }
   let Model = relation.model;
+  let model = null;
   if (util.isArray(data)) {
     for (let i = 0, len = data.length; i < len; i++) {
-      data[i] = new Model(data[i].dataValues).toJSON(relation.attr);
+      model = new Model(data[i].dataValues);
+      model.toJSON.bind(model, relation.attr);
+      data[i] = model;
     }
     return data;
   }
-  return new Model(data.dataValues).toJSON(relation.attr);
+  model = new Model(data.dataValues);
+  model.toJSON.bind(model, relation.attr);
+  return model;
 }
