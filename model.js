@@ -237,7 +237,7 @@ module.exports = function (name, getModelSetup) {
     if (this._attributes) {
       attrs = attrs.concat(this._attributes);
     }
-    return changeCase.arrayKeys('toCamel', attrs); 
+    return changeCase.array('toCamel', attrs); 
   };
 
   return SequelizeModel;
