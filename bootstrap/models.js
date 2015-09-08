@@ -4,7 +4,7 @@ let mysql      = require('mysql');
 let fs         = require('co-fs');
 let path       = require('path');
 let glob       = require('co-glob');
-let sequelize  = Reach.service('sequelize');
+let sequelize  = Reach.provider('sequelize');
 let changeCase = Reach.Helpers.Case;
 let config     = Reach.config.sequelize;
 
