@@ -4,7 +4,7 @@ let Sequelize  = require('sequelize');
 let util       = require('util');
 let moment     = require('moment');
 let Relations  = require('./helpers').Relations;
-let sequelize  = Reach.service('sequelize');
+let sequelize  = Reach.provider('sequelize');
 let changeCase = Reach.Helpers.Case;
 
 module.exports = function (name, getModelSetup) {
@@ -167,10 +167,17 @@ module.exports = function (name, getModelSetup) {
 
   /**
    * @method delete
+   * @param  {String} [pk]
    * @return {Void}
    */
-  SequelizeModel.prototype.delete = function *() {
-    yield this._schema.destroy({ where : { id : this.id } });
+  SequelizeModel.prototype.delete = function *(pk) {
+    let options = { where : {} }
+    if (pk) {
+      options.where[pk] = this[pk];
+    } else {
+      options.where.id = this.id;
+    }
+    yield this._schema.destroy(options);
     this.deletedAt = moment().utc().format('YYYY-MM-DD\THH:mm:ss') + '.000Z';
   };
 
