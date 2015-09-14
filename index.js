@@ -1,7 +1,7 @@
 'use strict';
 
 let Sequelize = require('sequelize');
-let error     = Reach.ErrorHandler;
+let error     = Reach.Error;
 let log       = Reach.Log;
 let config    = Reach.config.sequelize;
 

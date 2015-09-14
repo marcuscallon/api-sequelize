@@ -10,25 +10,31 @@ module.exports = function *() {
     password : config.password
   });
 
-  yield new Promise(function (resolve, reject) {
-    host.connect(function (err) {
-      if (err) { return reject(err); }
+  yield new Promise((resolve, reject) => {
+    host.connect((err) => {
+      if (err) { 
+        return reject(err); 
+      }
       resolve();
     });
   });
 
   if (config.force) {
-    yield new Promise(function (resolve, reject) {
-      host.query('DROP DATABASE IF EXISTS ' + config.database, function (err) {
-        if (err) { return reject(err); }
+    yield new Promise((resolve, reject) => {
+      host.query('DROP DATABASE IF EXISTS ' + config.database, (err) => {
+        if (err) { 
+          return reject(err); 
+        }
         resolve();
       });
     });
   }
 
-  yield new Promise(function (resolve, reject) {
-    host.query('CREATE DATABASE IF NOT EXISTS ' + config.database + ' CHARACTER SET = utf8 COLLATE = ' + (config.charset || 'utf8_unicode_ci'), function (err) {
-      if (err) { return reject(err); }
+  yield new Promise((resolve, reject) => {
+    host.query('CREATE DATABASE IF NOT EXISTS ' + config.database + ' CHARACTER SET = utf8 COLLATE = ' + (config.charset || 'utf8_unicode_ci'), (err) => {
+      if (err) { 
+        return reject(err); 
+      }
       resolve();
     });
   });
