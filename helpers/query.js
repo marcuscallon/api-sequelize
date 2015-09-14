@@ -1,6 +1,6 @@
 'use strict';
 
-let util = require('util');
+let type = Reach.Helpers.Type;
 
 /**
  * @class  Query
@@ -30,7 +30,7 @@ let Query = module.exports = function query(options, schema) {
  * @return {Object}
  */
 function prepareValue(handler, val) {
-  if (util.isFunction(handler)) {
+  if (type.isFunction(handler)) {
     return handler(val);
   }
   let result = {};

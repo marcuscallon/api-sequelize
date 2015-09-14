@@ -1,11 +1,11 @@
 'use strict';
 
 let Sequelize  = require('sequelize');
-let util       = require('util');
 let moment     = require('moment');
 let Relations  = require('./helpers').Relations;
 let sequelize  = Reach.provider('sequelize');
 let changeCase = Reach.Helpers.Case;
+let type       = Reach.Helpers.Type;
 
 module.exports = function (name, getModelSetup) {
 
@@ -206,7 +206,7 @@ module.exports = function (name, getModelSetup) {
       }
     }
 
-    if (util.isArray(attributes)) {
+    if (type.isArray(attributes)) {
       for (let key in data) {
         if (attributes.indexOf(key) === -1) {
           delete data[key];

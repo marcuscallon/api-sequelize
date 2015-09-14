@@ -1,6 +1,6 @@
 'use strict';
 
-let util = require('util');
+let type = Reach.Helpers.Type;
 
 /**
  * @class Relations
@@ -63,7 +63,7 @@ function populateRelation(data, relation) {
   if (!data) { return null; }
   let Model = relation.model;
   let model = null;
-  if (util.isArray(data)) {
+  if (type.isArray(data)) {
     for (let i = 0, len = data.length; i < len; i++) {
       model = new Model(data[i].dataValues);
       model.toJSON.bind(model, relation.attr);
