@@ -35,7 +35,13 @@ module.exports = function *update(data, pk) {
 
   // ### Update Model
 
-  let result = yield this._schema.update(data, options);
+  yield this._schema.update(data, options);
+
+  // ### Attach Values
+
+  for (let key in data) {
+    this[key] = data[key];
+  }
 
   // ### Temporary Timestamp
   // We add a temporary updatedAt timestamp since we are not receiving this
