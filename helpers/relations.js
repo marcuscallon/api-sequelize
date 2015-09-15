@@ -4,10 +4,10 @@ let type = Reach.Helpers.Type;
 
 /**
  * @class Relations
- * @param {Object} SequelizeModel
+ * @param {Object} Model
  * @param {Object} options
  */
-let Relations = module.exports = function Relations(SequelizeModel, options) {
+let Relations = module.exports = function Relations(Model, options) {
   if (!options || !options.include) {
     return; 
   }
@@ -22,7 +22,7 @@ let Relations = module.exports = function Relations(SequelizeModel, options) {
       this.store[relation.as].attr  = relation.attr || null;
 
       options.include[i].model = model._schema;
-      SequelizeModel._attributes.push(relation.as);
+      Model._attributes.push(relation.as);
     }
   }
 };
