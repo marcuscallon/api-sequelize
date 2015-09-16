@@ -11,10 +11,10 @@ let config     = Reach.config.sequelize;
 module.exports = function *() {
   yield loadInterfaceModels();
   yield loadModuleModels();
+  yield require('../setup');
   yield sequelize.sync({
     force : config.force
   });
-  yield require('../setup');
 };
 
 /**
