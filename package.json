@@ -1,6 +1,6 @@
 {
   "name": "reach-sequelize",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A SQL provider for reach-api built with sequelize.",
   "repository": {
     "type": "git",
