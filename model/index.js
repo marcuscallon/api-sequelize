@@ -11,6 +11,8 @@ module.exports = function (name, getModelSetup) {
 
   /**
    * @class SequelizeModel
+   * @constructor
+   * @param {Object} data
    */
   function SequelizeModel(data) {
     let attrs = this.getAttributes();
@@ -22,14 +24,25 @@ module.exports = function (name, getModelSetup) {
     }
   }
 
+  // ### Snake Case
+  // Set field value to snake_case of the provided schema keys.
+  // !Apparently underscored is not working as expected
+
+  for (let key in _model.schema) {
+    _model.schema[key].field = changeCase.toSnake(key);
+  }
+
   /**
+   * Defines the schema with the sequelize instance.
    * @property _schema
    * @type     Object
    */
-  SequelizeModel.prototype._schema = SequelizeModel._schema = sequelize.define(name, changeCase.objectKeys('toCamel', _model.schema), {
-    tableName : _model.table,
-    paranoid  : _model.paranoid !== undefined ? _model.paranoid : true
-  });
+  SequelizeModel.prototype._schema = SequelizeModel._schema = (
+    sequelize.define(name, changeCase.objectKeys('toCamel', _model.schema), {
+      tableName : _model.table,
+      paranoid  : _model.paranoid !== undefined ? _model.paranoid : true
+    })
+  );
 
   /**
    * The relation definitions of your model.
