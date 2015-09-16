@@ -15,14 +15,26 @@ let Relations = module.exports = function Relations(Model, options) {
     this.exists = true;
     for (let i = 0, len = options.include.length; i < len; i++) {
       let relation = options.include[i];
-      let model    = Reach.model(relation.model);
+      let model    = Reach.model(relation.model);       // Fetch related model
+      let key      = relation.as || model._schema.name; // Add key, if no as value is present we use _schema.name
 
-      this.store[relation.as]       = {};
-      this.store[relation.as].model = model;
-      this.store[relation.as].attr  = relation.attr || null;
+      // ### Store Relation
+      // Stores the model and relational attributes for when we need to
+      // prepare the relation for toJSON filtering.
+
+      this.store[key]       = {};
+      this.store[key].model = model;
+      this.store[key].attr  = relation.attr || null;
+
+      // ### Assign Real Model
+      // Assign the real model to the options model.
 
       options.include[i].model = model._schema;
-      Model._attributes.push(relation.as);
+
+      // ### Push Attribute
+      // Add the relation key to the model as a valid attribute.
+
+      Model._attributes.push(key);
     }
   }
 };
