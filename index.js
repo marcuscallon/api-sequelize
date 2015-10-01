@@ -31,4 +31,12 @@ let sequelize = new Sequelize(config.database, config.username, config.password,
   }
 });
 
+// ### Dirty Connection Fix
+
+process.on('uncaughtException', function (error) {
+  if (error.code !== 'PROTOCOL_CONNECTION_LOST') {
+    throw error;
+  }
+});
+
 module.exports = sequelize;
