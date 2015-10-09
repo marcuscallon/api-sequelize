@@ -3,6 +3,7 @@
 let mysql     = require('mysql');
 let sequelize = Reach.provider('sequelize');
 let config    = Reach.config.sequelize;
+let log       = Reach.Log;
 
 module.exports = function *() {
   let host = mysql.createConnection({
@@ -19,6 +20,7 @@ module.exports = function *() {
       if (err) { 
         return reject(err); 
       }
+      log.info(' - Connection Success!');
       resolve();
     });
   });
@@ -32,6 +34,7 @@ module.exports = function *() {
         if (err) { 
           return reject(err); 
         }
+        log.info(' - Dropped Database [%s]', config.database);
         resolve();
       });
     });
@@ -44,6 +47,7 @@ module.exports = function *() {
       if (err) { 
         return reject(err); 
       }
+      log.info(' - Created Database [%s]', config.database);
       resolve();
     });
   });
