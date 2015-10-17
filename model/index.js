@@ -37,12 +37,10 @@ module.exports = function (name, getModelSetup) {
    * @property _schema
    * @type     Object
    */
-  SequelizeModel.prototype._schema = SequelizeModel._schema = (
-    sequelize.define(name, changeCase.objectKeys('toCamel', _model.schema), {
-      tableName : _model.table,
-      paranoid  : _model.paranoid !== undefined ? _model.paranoid : true
-    })
-  );
+  SequelizeModel.prototype._schema = SequelizeModel._schema = sequelize.define(name, changeCase.objectKeys('toCamel', _model.schema), {
+    tableName : _model.table,
+    paranoid  : _model.paranoid !== undefined ? _model.paranoid : true
+  });
 
   /**
    * The relation definitions of your model.
