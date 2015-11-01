@@ -5,8 +5,6 @@ module.exports = {
    | Sequelize
    |--------------------------------------------------------------------------------
    |
-   | The various API settings that define how your API reacts to incoming requests.
-   |
    | @param {String}  host     Server address
    | @param {String}  database Name of the database to connect to
    | @param {String}  username Connection username
