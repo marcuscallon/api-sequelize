@@ -1,16 +1,21 @@
 module.exports = {
   
   /*
-    Sequelize
-
-    @host     {String}  Server address
-    @database {String}  Name of the database to connect to
-    @username {String}  Connection username
-    @password {String}  Connection password
-    @dialect  {String}  mysql | mariadb | sqlite | postgres | mssql
-    @pool     {Object}  Connection pool settings
-    @debug    {Boolean} Log sequelize output to the terminal
-    @force    {Boolean} Drop all the table when syncing
+   |--------------------------------------------------------------------------------
+   | Sequelize
+   |--------------------------------------------------------------------------------
+   |
+   | The various API settings that define how your API reacts to incoming requests.
+   |
+   | @param {String}  host     Server address
+   | @param {String}  database Name of the database to connect to
+   | @param {String}  username Connection username
+   | @param {String}  password Connection password
+   | @param {String}  dialect  mysql | mariadb | sqlite | postgres | mssql
+   | @param {Object}  pool     Connection pool settings
+   | @param {Boolean} debug    Log sequelize output to the terminal
+   | @param {Boolean} force    Drop all the table when syncing
+   |
    */
 
   sequelize : {

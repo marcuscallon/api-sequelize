@@ -1,9 +1,9 @@
 'use strict';
 
 let Sequelize  = require('sequelize');
-let sequelize  = Reach.provider('sequelize');
-let changeCase = Reach.Helpers.Case;
-let type       = Reach.Helpers.Type;
+let sequelize  = Bento.provider('sequelize');
+let changeCase = Bento.Helpers.Case;
+let type       = Bento.Helpers.Type;
 
 module.exports = function (name, getModelSetup) {
 

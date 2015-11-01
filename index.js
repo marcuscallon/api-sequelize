@@ -1,9 +1,9 @@
 'use strict';
 
 let Sequelize = require('sequelize');
-let error     = Reach.Error;
-let log       = Reach.Log;
-let config    = Reach.config.sequelize;
+let error     = Bento.Error;
+let log       = Bento.Log;
+let config    = Bento.config.sequelize;
 
 if (!config) {
   throw error.parse({

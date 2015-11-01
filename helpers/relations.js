@@ -1,6 +1,6 @@
 'use strict';
 
-let type = Reach.Helpers.Type;
+let type = Bento.Helpers.Type;
 
 /**
  * @class Relations
@@ -15,7 +15,7 @@ let Relations = module.exports = function Relations(Model, options) {
     this.exists = true;
     for (let i = 0, len = options.include.length; i < len; i++) {
       let relation = options.include[i];
-      let model    = Reach.model(relation.model);       // Fetch related model
+      let model    = Bento.model(relation.model);       // Fetch related model
       let key      = relation.as || model._schema.name; // Add key, if no as value is present we use _schema.name
 
       // ### Store Relation

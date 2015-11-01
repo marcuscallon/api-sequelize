@@ -1,6 +1,6 @@
 'use strict';
 
-let type = Reach.Helpers.Type;
+let type = Bento.Helpers.Type;
 
 /**
  * @class  Query

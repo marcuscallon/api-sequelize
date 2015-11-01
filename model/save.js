@@ -1,6 +1,6 @@
 'use strict';
 
-let changeCase = Reach.Helpers.Case;
+let changeCase = Bento.Helpers.Case;
 
 /**
  * Stores a new record in the database with the populated model data.

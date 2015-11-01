@@ -1,7 +1,7 @@
 'use strict';
 
 let mysql  = require('mysql');
-let config = Reach.config.sequelize;
+let config = Bento.config.sequelize;
 let host   = mysql.createConnection({
   host     : config.host,
   database : config.database,

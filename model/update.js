@@ -1,8 +1,8 @@
 'use strict';
 
 let moment = require('moment');
-let error  = Reach.Error;
-let type   = Reach.Helpers.Type;
+let error  = Bento.Error;
+let type   = Bento.Helpers.Type;
 
 /**
  * Performs an update on the sequelize database with the provided data.

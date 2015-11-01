@@ -1,25 +1,26 @@
 {
-  "name": "reach-sequelize",
+  "name": "bentojs-api-sequelize",
   "version": "0.1.9",
-  "description": "A SQL provider for reach-api built with sequelize.",
+  "description": "A SQL provider for bentojs api built with sequelize.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/reach/reach-sequelize"
+    "url": "https://github.com/bentojs/api-sequelize"
   },
   "author": "Christoffer Rødvik",
   "license": "MIT",
   "keywords": [
-    "reach",
-    "reach-api",
+    "bento",
+    "bentojs",
+    "bentojs-api",
     "sequelize",
     "database",
     "sql"
   ],
   "dependencies": {
     "mysql": "2.9.0",
-    "sequelize": "3.8.0"
+    "sequelize": "3.13.0"
   },
-  "reach": {
+  "bento": {
     "name": "sequelize",
     "type": "provider",
     "init": "setup.js"
