@@ -1,21 +1,30 @@
 {
   "name": "bentojs-api-sequelize",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "A SQL provider for bentojs api built with sequelize.",
+  "author": "Christoffer Rødvik <snapgravy@gmail.com>",
+  "contributors": [
+    {
+      "name": "Matt Ginty",
+      "email": "matt.ginty@gmail.com"
+    }
+  ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/bentojs/api-sequelize"
+    "url": "https://github.com/bentojs/api-sequelize.git"
   },
-  "author": "Christoffer Rødvik",
-  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bentojs/api-sequelize/issues"
+  },
   "keywords": [
     "bento",
     "bentojs",
     "bentojs-api",
-    "sequelize",
+    "bentojs-provider",
     "database",
     "sql"
   ],
+  "license": "MIT",
   "dependencies": {
     "mysql": "2.9.0",
     "sequelize": "3.13.0"
