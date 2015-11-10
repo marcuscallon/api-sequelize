@@ -34,7 +34,7 @@ module.exports = function *() {
         if (err) { 
           return reject(err); 
         }
-        log.info(' - Dropped Database [%s]', config.database);
+        log.info(` - Dropped Database [${ config.database }]`);
         resolve();
       });
     });
@@ -47,7 +47,7 @@ module.exports = function *() {
       if (err) { 
         return reject(err); 
       }
-      log.info(' - Created Database [%s]', config.database);
+      log.info(` - Created Database [${ config.database }]`);
       resolve();
     });
   });
