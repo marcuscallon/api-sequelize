@@ -17,8 +17,8 @@ module.exports = function *() {
 
   yield new Promise((resolve, reject) => {
     host.connect((err) => {
-      if (err) { 
-        return reject(err); 
+      if (err) {
+        return reject(err);
       }
       log.info(' - Connection Success!');
       resolve();
@@ -31,8 +31,8 @@ module.exports = function *() {
   if (config.force) {
     yield new Promise((resolve, reject) => {
       host.query('DROP DATABASE IF EXISTS ' + config.database, (err) => {
-        if (err) { 
-          return reject(err); 
+        if (err) {
+          return reject(err);
         }
         log.info(` - Dropped Database [${ config.database }]`);
         resolve();
@@ -44,8 +44,8 @@ module.exports = function *() {
 
   yield new Promise((resolve, reject) => {
     host.query('CREATE DATABASE IF NOT EXISTS ' + config.database + ' CHARACTER SET = utf8 COLLATE = ' + (config.charset || 'utf8_unicode_ci'), (err) => {
-      if (err) { 
-        return reject(err); 
+      if (err) {
+        return reject(err);
       }
       log.info(` - Created Database [${ config.database }]`);
       resolve();

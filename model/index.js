@@ -5,7 +5,7 @@ let sequelize  = Bento.provider('sequelize');
 let changeCase = Bento.Helpers.Case;
 let type       = Bento.Helpers.Type;
 
-module.exports = function (name, getModelSetup) {
+module.exports = (name, getModelSetup) => {
 
   let _model = getModelSetup({}, Sequelize);
 
@@ -90,7 +90,7 @@ module.exports = function (name, getModelSetup) {
    * @param  {Array} [attributes]
    * @return {Object}
    */
-  SequelizeModel.prototype.toJSON = function (attributes) {
+  SequelizeModel.prototype.toJSON = function toJSON(attributes) {
     let attrs = this.getAttributes();
     let data  = {};
 
@@ -126,7 +126,7 @@ module.exports = function (name, getModelSetup) {
    * @method _data
    * @return {Object}
    */
-  SequelizeModel.prototype._data = function () {
+  SequelizeModel.prototype._data = function _data() {
     let attributes = this._schema.attributes;
     let result     = {};
     for (let key in attributes) {
@@ -143,12 +143,12 @@ module.exports = function (name, getModelSetup) {
    * @method getAttributes
    * @return {Array}
    */
-  SequelizeModel.prototype.getAttributes = function() {
+  SequelizeModel.prototype.getAttributes = function getAttributes() {
     let attrs = Object.keys(this._schema.attributes);
     if (this._attributes) {
       attrs = attrs.concat(this._attributes);
     }
-    return changeCase.array('toCamel', attrs); 
+    return changeCase.array('toCamel', attrs);
   };
 
   return SequelizeModel;

@@ -14,7 +14,7 @@ module.exports = function *() {
     }
     loaded.push(models[i]);
   }
-}
+};
 
 /**
  * @private
@@ -24,7 +24,7 @@ module.exports = function *() {
  */
 function prepareRelations(model, relations) {
   let handler = relations.pop();
-  relations.forEach(function (target, index) {
+  relations.forEach((target, index) => {
     relations[index] = Bento.model(target)._schema;
   });
   handler.apply(model._schema, relations);

@@ -1,6 +1,6 @@
 {
   "name": "bentojs-api-sequelize",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "description": "A SQL provider for bentojs api built with sequelize.",
   "author": "Christoffer Rødvik <snapgravy@gmail.com>",
   "contributors": [

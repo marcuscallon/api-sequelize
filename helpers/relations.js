@@ -2,71 +2,57 @@
 
 let type = Bento.Helpers.Type;
 
-/**
- * @class Relations
- * @param {Object} Model
- * @param {Object} options
- */
-let Relations = module.exports = function Relations(Model, options) {
-  if (!options || !options.include) {
-    return; 
-  }
-  if (options.include) {
-    this.exists = true;
-    for (let i = 0, len = options.include.length; i < len; i++) {
-      let relation = options.include[i];
-      let model    = Bento.model(relation.model);       // Fetch related model
-      let key      = relation.as || model._schema.name; // Add key, if no as value is present we use _schema.name
+module.exports = class Relations {
 
-      // ### Store Relation
-      // Stores the model and relational attributes for when we need to
-      // prepare the relation for toJSON filtering.
+  constructor(Model, options) {
+    this.exists = false;
+    this.store  = {};
+    if (!options || !options.include) {
+      return;
+    }
+    if (options.include) {
+      this.exists = true;
+      for (let i = 0, len = options.include.length; i < len; i++) {
+        let relation = options.include[i];
+        let model    = Bento.model(relation.model);       // Fetch related model
+        let key      = relation.as || model._schema.name; // Add key, if no as value is present we use _schema.name
 
-      this.store[key]       = {};
-      this.store[key].model = model;
-      this.store[key].attr  = relation.attr || null;
+        // ### Store Relation
+        // Stores the model and relational attributes for when we need to
+        // prepare the relation for toJSON filtering.
 
-      // ### Assign Real Model
-      // Assign the real model to the options model.
+        this.store[key]       = {};
+        this.store[key].model = model;
+        this.store[key].attr  = relation.attr || null;
 
-      options.include[i].model = model._schema;
+        // ### Assign Real Model
+        // Assign the real model to the options model.
 
-      // ### Push Attribute
-      // Add the relation key to the model as a valid attribute.
+        options.include[i].model = model._schema;
 
-      Model._attributes.push(key);
+        // ### Push Attribute
+        // Add the relation key to the model as a valid attribute.
+
+        Model._attributes.push(key);
+      }
     }
   }
-};
 
-/**
- * @property exists
- * @type     Boolean
- * @default  false
- */
-Relations.prototype.exists = false;
-
-/**
- * @property store
- * @type     Object
- * @default  {}
- */
-Relations.prototype.store = {};
-
-/**
- * @method prepare
- * @param  {Object} data
- */
-Relations.prototype.prepare = function (data) {
-  let relations = this.store;
-  for (let key in relations) {
-    data[key] = populateRelation(data[key], relations[key]);
+  /**
+   * Prepares related data.
+   * @param  {Object} data
+   * @return {Void}
+   */
+  prepare(data) {
+    let relations = this.store;
+    for (let key in relations) {
+      data[key] = populateRelation(data[key], relations[key]);
+    }
   }
+
 };
 
 /**
- * @private
- * @method populateRelation
  * @param  {Mixed}    data
  * @param  {Function} relation
  * @return {Mixed}

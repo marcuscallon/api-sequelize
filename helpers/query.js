@@ -2,12 +2,8 @@
 
 let type = Bento.Helpers.Type;
 
-/**
- * @class  Query
- * @param  {Object} options
- * @param  {Object} schema
- * @return {Object}
- */
+// ### Query
+
 let Query = module.exports = function query(options, schema) {
   let result = { where : {} };
   let where  = schema.where;
@@ -23,8 +19,47 @@ let Query = module.exports = function query(options, schema) {
 };
 
 /**
- * @private
- * @method prepareValue
+ * @method BOOLEAN
+ * @param  {Mixed} val
+ * @return {Boolean}
+ */
+Query.BOOLEAN = function BOOLEAN(val) {
+  switch (val) {
+    case 'true'  : case 1 : return true;
+    case 'false' : case 0 : return false;
+    default :
+      return val;
+  }
+};
+
+/**
+ * @method STRING
+ * @param  {Mixed} val
+ * @return {String}
+ */
+Query.STRING = function STRING(val) {
+  return String(val);
+};
+
+/**
+ * @method NUMBER
+ * @param  {Mixed} val
+ * @return {Number}
+ */
+Query.NUMBER = function NUMBER(val) {
+  return Number(val);
+};
+
+/**
+ * @method DATE
+ * @param  {Mixed} val
+ * @return {Date}
+ */
+Query.DATE = function DATE(val) {
+  return Date(val);
+};
+
+/**
  * @param  {Mixed} handler
  * @param  {Mixed} val
  * @return {Object}
@@ -38,45 +73,4 @@ function prepareValue(handler, val) {
     result[key] = prepareValue(handler[key], val);
   }
   return result;
-};
-
-/**
- * @method BOOLEAN
- * @param  {Mixed} val
- * @return {Boolean}
- */
-Query.BOOLEAN = function (val) {
-  switch (val) {
-    case 'true'  : case 1 : return true;
-    case 'false' : case 0 : return false;
-    default : 
-      return val;
-  }
-};
-
-/**
- * @method STRING
- * @param  {Mixed} val
- * @return {String}
- */
-Query.STRING = function (val) {
-  return String(val);
-};
-
-/**
- * @method NUMBER
- * @param  {Mixed} val
- * @return {Number}
- */
-Query.NUMBER = function (val) {
-  return Number(val);
-};
-
-/**
- * @method DATE
- * @param  {Mixed} val
- * @return {Date}
- */
-Query.DATE = function (val) {
-  return Date(val);
 };

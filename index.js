@@ -24,7 +24,7 @@ let sequelize = new Sequelize(config.database, config.username, config.password,
   define : {
     underscored : true
   },
-  logging : function (str) {
+  logging(str) {
     if (config.debug) {
       log.debug(str);
     }
@@ -33,7 +33,7 @@ let sequelize = new Sequelize(config.database, config.username, config.password,
 
 // ### Dirty Connection Fix
 
-process.on('uncaughtException', function (error) {
+process.on('uncaughtException', (error) => {
   if (error.code !== 'PROTOCOL_CONNECTION_LOST') {
     throw error;
   }

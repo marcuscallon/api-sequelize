@@ -14,8 +14,8 @@ module.exports = function *(pk) {
   // ### Query Options
   // Make sure we use the correct primary key of the model.
 
-  let options = { 
-    where : {} 
+  let options = {
+    where : {}
   };
   options.where[pk] = this[pk];
 
