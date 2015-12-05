@@ -3,6 +3,14 @@
 let loaded = [];
 
 module.exports = function *() {
+  yield relations();
+};
+
+/**
+ * Setup the model relations.
+ * @return {Void}
+ */
+function *relations() {
   let models = Object.keys(Bento.store.models);
   for (let i = 0, len = models.length; i < len; i++) {
     if (loaded.indexOf(models[i]) !== -1) {
@@ -14,13 +22,12 @@ module.exports = function *() {
     }
     loaded.push(models[i]);
   }
-};
+}
 
 /**
- * @private
- * @method prepareRelations
  * @param  {Function} model
  * @param  {Array}    relations
+ * @return {Void}
  */
 function prepareRelations(model, relations) {
   let handler = relations.pop();

@@ -54,7 +54,7 @@ module.exports = (name, getModelSetup) => {
    * @property _attributes
    * @type     Array
    */
-  SequelizeModel.prototype._attributes = SequelizeModel._attributes = [];
+  SequelizeModel.prototype._attributes = SequelizeModel._attributes = _model.attributes || [];
 
   /**
    * Attributes to remove before returning the model as JSON.
