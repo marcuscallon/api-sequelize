@@ -79,10 +79,10 @@ function *database(host) {
  * @return {Void}
  */
 function *groups() {
-  let count = yield Group.count({ where : { name : 'public' } });
+  let count = yield Group.count({ where : { name : 'general' } });
   if (!count) {
     let group = new Group({
-      name : 'public'
+      name : 'general'
     });
     yield group.save();
   }
