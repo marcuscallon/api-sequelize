@@ -54,7 +54,7 @@ module.exports = (name, getModelSetup) => {
    * @property _attributes
    * @type     Array
    */
-  SequelizeModel.prototype._attributes = SequelizeModel._attributes = [];
+  SequelizeModel.prototype._attributes = SequelizeModel._attributes = _model.attributes;
 
   /**
    * Attributes to remove before returning the model as JSON.
@@ -146,10 +146,39 @@ module.exports = (name, getModelSetup) => {
   SequelizeModel.prototype.getAttributes = function getAttributes() {
     let attrs = Object.keys(this._schema.attributes);
     if (this._attributes) {
-      attrs = attrs.concat(this._attributes);
+      sortAttributes(attrs, this._attributes);
     }
     return changeCase.array('toCamel', attrs);
   };
+
+  /**
+   * Returns a custom sorted attributes list.
+   * @param  {Array} source
+   * @param  {Array} custom
+   * @return {Array}
+   */
+  function sortAttributes(source, custom) {
+    let after = {};
+
+    // ### Parse Custom Attributes
+
+    custom.forEach((val) => {
+      let split = val.split('=>');
+      if (split.length > 1) {
+        after[split[0]] = split[1];
+      } else {
+        source.push(split[0]);
+      }
+    });
+
+    // ### Insert After
+
+    for (let key in after) {
+      source.splice(source.indexOf(key) + 1, 0, after[key]);
+    }
+
+    return source;
+  }
 
   return SequelizeModel;
 
