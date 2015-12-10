@@ -10,6 +10,6 @@ module.exports = function *count(options) {
   try {
     return yield this._schema.count(options);
   } catch (err) {
-    throw this._error('UPSERT', err);
+    throw this._error('COUNT', err);
   }
 };

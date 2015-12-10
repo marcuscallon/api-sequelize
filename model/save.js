@@ -8,8 +8,9 @@ let changeCase = Bento.Helpers.Case;
  * @return {Void}
  */
 module.exports = function *save() {
+  let result = null;
   try {
-    let result = yield this._schema.create(this._data());
+    result = yield this._schema.create(this._data());
   } catch (err) {
     throw this._error('SAVE', err);
   }
