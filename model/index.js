@@ -100,7 +100,7 @@ module.exports = (name, getModelSetup) => {
         fields : raw.fields
       }
     });
-  }
+  };
 
   /**
    * @method toJSON
