@@ -94,7 +94,7 @@ module.exports = (name, getModelSetup) => {
       code    : `SEQUELIZE_${ type }_ERROR`,
       message : changeCase.toCapital(err.message),
       data    : {
-        type   : err.type,
+        type   : changeCase.toUpper(changeCase.toSnake(err.type)),
         path   : err.path,
         value  : err.value,
         fields : raw.fields
