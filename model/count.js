@@ -7,5 +7,9 @@
  * @return {Int}
  */
 module.exports = function *count(options) {
-  return yield this._schema.count(options);
+  try {
+    return yield this._schema.count(options);
+  } catch (err) {
+    throw this._error('UPSERT', err);
+  }
 };

@@ -21,7 +21,11 @@ module.exports = function *(pk) {
 
   // ### Delete Model
 
-  yield this._schema.destroy(options);
+  try {
+    yield this._schema.destroy(options);
+  } catch (err) {
+    throw this._error('DELETE', err);
+  }
 
   // ### Temporary Timestamp
   // We add a temporary deletedAt timestamp since we are not receiving this

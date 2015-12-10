@@ -2,6 +2,7 @@
 
 let Sequelize  = require('sequelize');
 let sequelize  = Bento.provider('sequelize');
+let error      = Bento.Error;
 let changeCase = Bento.Helpers.Case;
 let type       = Bento.Helpers.Type;
 
@@ -83,6 +84,22 @@ module.exports = (name, getModelSetup) => {
     for (let key in _model.methods) {
       SequelizeModel.prototype[key] = _model.methods[key];
     }
+  }
+
+  // ### Error Handler
+
+  SequelizeModel.prototype._error = SequelizeModel._error = function SequelizeError(type, raw) {
+    let err = raw.errors[0];
+    return error.parse({
+      code    : `SEQUELIZE_${ type }_ERROR`,
+      message : changeCase.toCapital(err.message),
+      data    : {
+        type   : err.type,
+        path   : err.path,
+        value  : err.value,
+        fields : raw.fields
+      }
+    });
   }
 
   /**

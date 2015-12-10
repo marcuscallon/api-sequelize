@@ -7,9 +7,9 @@ let config    = Bento.config.sequelize;
 
 if (!config) {
   throw error.parse({
-    code     : 'SEQUELIZE_MISSING_CONFIG',
-    message  : 'Sequelize service is missing configuration',
-    solution : 'Make sure you have created a configuration file for sequelize in the config folder'
+    code     : `SEQUELIZE_MISSING_CONFIG`,
+    message  : `Sequelize service is missing configuration`,
+    solution : `Make sure you have created a configuration file for sequelize in the config folder.`
   });
 }
 
@@ -25,9 +25,7 @@ let sequelize = new Sequelize(config.database, config.username, config.password,
     underscored : true
   },
   logging(str) {
-    if (config.debug) {
-      log.debug(str);
-    }
+    // ...
   }
 });
 

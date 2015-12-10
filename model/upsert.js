@@ -5,5 +5,9 @@
  * @return {Void}
  */
 module.exports = function *upsert() {
-  yield this._schema.upsert(this._data());
+  try {
+    yield this._schema.upsert(this._data());
+  } catch (err) {
+    throw this._error('UPSERT', err);
+  }
 };

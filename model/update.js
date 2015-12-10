@@ -35,7 +35,11 @@ module.exports = function *update(data, pk) {
 
   // ### Update Model
 
-  yield this._schema.update(data, options);
+  try {
+    yield this._schema.update(data, options);
+  } catch (err) {
+    throw this._error('UPDATE', err);
+  }
 
   // ### Attach Values
 
