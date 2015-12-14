@@ -1,6 +1,7 @@
 'use strict';
 
 let Sequelize  = require('sequelize');
+let pluralize  = require('pluralize');
 let sequelize  = Bento.provider('sequelize');
 let error      = Bento.Error;
 let changeCase = Bento.Helpers.Case;
@@ -44,23 +45,26 @@ module.exports = (name, getModelSetup) => {
   });
 
   /**
+   * The resource identifier of the object.
+   * @property {String} _resource
+   */
+  SequelizeModel.prototype._resource = SequelizeModel._resource = _model.resource || pluralize(changeCase.toSnake(name.split('/').pop()));
+
+  /**
    * The relation definitions of your model.
-   * @property _relations
-   * @type     Array
+   * @property {Array} _relations
    */
   SequelizeModel._relations = _model.relations;
 
   /**
    * Attributes that can be provided that is not part of the model schema.
-   * @property _attributes
-   * @type     Array
+   * @property {Array} _attributes
    */
   SequelizeModel.prototype._attributes = SequelizeModel._attributes = _model.attributes || [];
 
   /**
    * Attributes to remove before returning the model as JSON.
-   * @property _blacklist
-   * @type     Array
+   * @property {Array} _blacklist
    */
   SequelizeModel.prototype._blacklist = _model.blacklist;
 
@@ -77,6 +81,7 @@ module.exports = (name, getModelSetup) => {
   SequelizeModel.prototype.upsert = require('./upsert');
   SequelizeModel.prototype.update = require('./update');
   SequelizeModel.prototype.delete = require('./delete');
+  SequelizeModel.prototype.relay  = require('./relay');
 
   // ### Custom Methods
 
@@ -86,8 +91,12 @@ module.exports = (name, getModelSetup) => {
     }
   }
 
-  // ### Error Handler
-
+  /**
+   * Returns a bentojs friendly sequelize error object.
+   * @param  {String} type The query type in all uppercase.
+   * @param  {Object} raw  The raw error object.
+   * @return {Object}
+   */
   SequelizeModel.prototype._error = SequelizeModel._error = function SequelizeError(type, raw) {
     let err = raw.errors[0];
     return error.parse({
@@ -103,7 +112,7 @@ module.exports = (name, getModelSetup) => {
   };
 
   /**
-   * @method toJSON
+   * Prepares the instance JSON representation.
    * @param  {Array} [attributes]
    * @return {Object}
    */
@@ -140,7 +149,6 @@ module.exports = (name, getModelSetup) => {
 
   /**
    * Returns a list of defined data values on the instanced model.
-   * @method _data
    * @return {Object}
    */
   SequelizeModel.prototype._data = function _data() {
@@ -157,7 +165,6 @@ module.exports = (name, getModelSetup) => {
 
   /**
    * Compiles a list of attributes currently available in the model.
-   * @method getAttributes
    * @return {Array}
    */
   SequelizeModel.prototype.getAttributes = function getAttributes() {

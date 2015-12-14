@@ -2,7 +2,6 @@
 
 /**
  * Provides a record count based on the provided query options.
- * @method count
  * @param  {Object} options
  * @return {Int}
  */
