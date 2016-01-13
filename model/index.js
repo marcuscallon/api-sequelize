@@ -5,7 +5,7 @@ let pluralize  = require('pluralize');
 let sequelize  = Bento.provider('sequelize');
 let error      = Bento.Error;
 let changeCase = Bento.Helpers.Case;
-let type       = Bento.Helpers.Type;
+let types      = Bento.Helpers.Type;
 
 module.exports = (name, getModelSetup) => {
 
@@ -98,7 +98,17 @@ module.exports = (name, getModelSetup) => {
    * @return {Object}
    */
   SequelizeModel.prototype._error = SequelizeModel._error = function SequelizeError(type, raw) {
-    let err = raw.errors[0];
+    let err = {};
+    if (types.isArray(raw)) {
+      err = raw.errors[0];
+    } else {
+      err = {
+        type    : raw.name,
+        message : raw.message,
+        path    : null,
+        value   : null
+      };
+    }
     return error.parse({
       code    : `SEQUELIZE_${ type }_ERROR`,
       message : changeCase.toCapital(err.message),
@@ -106,7 +116,8 @@ module.exports = (name, getModelSetup) => {
         type   : changeCase.toUpper(changeCase.toSnake(err.type)),
         path   : err.path,
         value  : err.value,
-        fields : raw.fields
+        fields : raw.fields,
+        index  : raw.index
       }
     });
   };
@@ -136,7 +147,7 @@ module.exports = (name, getModelSetup) => {
       }
     }
 
-    if (type.isArray(attributes)) {
+    if (types.isArray(attributes)) {
       for (let key in data) {
         if (attributes.indexOf(key) === -1) {
           delete data[key];

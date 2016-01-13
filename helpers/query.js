@@ -6,15 +6,27 @@ let type = Bento.Helpers.Type;
 
 let Query = module.exports = function query(options, schema) {
   let result = { where : {} };
-  let where  = schema.where;
+
+  // ### Where
+
+  let where = schema.where;
   for (let key in where) {
     if (options.hasOwnProperty(key)) {
       result.where[key] = prepareValue(where[key], options[key]);
     }
   }
+
+  // ### Relations
+
   if (schema.include) { result.include = schema.include; }
-  if (options.limit)  { result.limit   = Query.NUMBER(options.limit); }
-  if (options.offset) { result.offset  = Query.NUMBER(options.offset); }
+
+  // ### Offset & Limit
+
+  result.limit  = options.limit  ? Query.NUMBER(options.limit)  : 20;
+  result.offset = options.offset ? Query.NUMBER(options.offset) : 0;
+  if (!result.limit)  { delete result.limit; }
+  if (!result.offset) { delete result.offset; }
+
   return result;
 };
 

@@ -37,8 +37,4 @@ module.exports = function SequelizeRelay(type, resource, user) {
   } else {
     relay.emit(resource, payload);
   }
-
-  if (!Bento.isTesting()) {
-    log.debug(`Relay [${ resource }:${ type }][id:${ this.id }]`);
-  }
 };
