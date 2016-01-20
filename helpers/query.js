@@ -27,6 +27,12 @@ let Query = module.exports = function query(options, schema) {
   if (!result.limit)  { delete result.limit; }
   if (!result.offset) { delete result.offset; }
 
+  // ### Order
+
+  if (options.order) {
+    result.order = [ options.order.split(',') ];
+  }
+
   return result;
 };
 
