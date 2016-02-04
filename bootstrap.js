@@ -6,26 +6,51 @@ let Group     = Bento.model('Group');
 let GroupRole = Bento.model('GroupRole');
 let Role      = Bento.model('Role');
 let log       = Bento.Log;
+let error     = Bento.Error;
 let config    = Bento.config.sequelize;
 
 module.exports = function *() {
-  let host = mysql.createConnection({
-    host     : config.host,
-    user     : config.username,
-    password : config.password
-  });
-  yield database(host);
+  yield verifyConfig();
+  yield database();
   yield groups();
   yield roles();
   yield require('./setup');
 };
 
 /**
- * Sets up the database.
- * @param  {Object} host
+ * Makes sure required database settings are present.
  * @return {Void}
  */
-function *database(host) {
+function *verifyConfig() {
+  let errors = [];
+  if (!config) {
+    throw error.parse({
+      code     : 'SEQUELIZE_CONFIG',
+      message  : 'Missing sequelize configuration.',
+      solution : 'Make sure the ./config/sequelize folder has a default and environment file set.'
+    });
+  }
+  if (!config.host)     { errors.push('host'); }
+  if (!config.database) { errors.push('database'); }
+  if (!config.username) { errors.push('username'); }
+  if (errors.length) {
+    throw error.parse({
+      code    : 'SEQUELIZE_CONFIG',
+      message : `Missing required configuration settings [ ${ errors.join(', ') } ]`
+    });
+  }
+}
+
+/**
+ * Sets up the database.
+ * @return {Void}
+ */
+function *database() {
+  let host = mysql.createConnection({
+    host     : config.host,
+    user     : config.username,
+    password : config.password
+  });
 
   // ### Connection Test
   // Test to see if the connection is valid.
@@ -80,10 +105,10 @@ function *database(host) {
  * @return {Void}
  */
 function *groups() {
-  let count = yield Group.count({ where : { name : 'general' } });
+  let count = yield Group.count({ where : { name : 'General' } });
   if (!count) {
     let group = new Group({
-      name : 'general'
+      name : 'General'
     });
     yield group.save();
   }
