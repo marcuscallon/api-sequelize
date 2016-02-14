@@ -52,4 +52,6 @@ module.exports = function *update(data, pk) {
   // from the resulting update operation.
 
   this.updatedAt = moment().utc().format('YYYY-MM-DD\THH:mm:ss') + '.000Z';
+
+  return this;
 };

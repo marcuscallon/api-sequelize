@@ -4,8 +4,7 @@ let changeCase = Bento.Helpers.Case;
 
 /**
  * Stores a new record in the database with the populated model data.
- * @method save
- * @return {Void}
+ * @return {Object}
  */
 module.exports = function *save() {
   let result = null;
@@ -14,12 +13,9 @@ module.exports = function *save() {
   } catch (err) {
     throw this._error('SAVE', err);
   }
-
-  // ### Prepare Result
-  // Assigns the stored values to the object.
-
   let values = changeCase.objectKeys('toCamel', result.dataValues);
   for (let key in values) {
     this[key] = values[key];
   }
+  return this;
 };

@@ -40,7 +40,7 @@ module.exports = (name, getModelSetup) => {
    * @type     Object
    */
   SequelizeModel.prototype._schema = SequelizeModel._schema = sequelize.define(name, changeCase.objectKeys('toCamel', _model.schema), {
-    tableName : _model.table,
+    tableName : _model.table || `${ changeCase('toLower', name) }s`,
     paranoid  : _model.paranoid !== undefined ? _model.paranoid : true
   });
 
@@ -71,6 +71,9 @@ module.exports = (name, getModelSetup) => {
   // ### Static Methods
 
   SequelizeModel.count    = require('./count');
+  SequelizeModel.max      = require('./max');
+  SequelizeModel.min      = require('./min');
+  SequelizeModel.sum      = require('./sum');
   SequelizeModel.find     = require('./find');
   SequelizeModel.findOne  = require('./findOne');
   SequelizeModel.findById = require('./findById');
