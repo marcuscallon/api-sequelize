@@ -9,8 +9,6 @@
 
 ## [Setup](#setup)
 
-Run the following commands in the api root:
-
 ```sh
 # Install npm package
 $ npm install bentojs-api-sequelize --save

@@ -46,13 +46,13 @@ Bento.Register.Model('Foo', 'sequelize', (model, Sequelize) => {
 });
 ```
 
-#### [Table][#table]
+#### [Table](#table)
 
 Defines the name of the table that is created for the model.
 
  - As of *1.1.5* table name defaults to the models name, so if you define `Foo` as name the default name will be `foos`.
 
-#### [Schema][#schema]
+#### [Schema](#schema)
 
 Defines the models schema, for a full overview over how to define your schema see the [sequelize docs](http://docs.sequelizejs.com/en/latest/docs/models-definition/).
 
