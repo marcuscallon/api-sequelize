@@ -4,7 +4,7 @@ let Sequelize  = require('sequelize');
 let pluralize  = require('pluralize');
 let sequelize  = Bento.provider('sequelize');
 let error      = Bento.Error;
-let changeCase = Bento.Helpers.Case;
+let changeCase = Bento.Helpers.ChangeCase;
 let types      = Bento.Helpers.Type;
 
 module.exports = (name, getModelSetup) => {
@@ -40,7 +40,7 @@ module.exports = (name, getModelSetup) => {
    * @type     Object
    */
   SequelizeModel.prototype._schema = SequelizeModel._schema = sequelize.define(name, changeCase.objectKeys('toCamel', _model.schema), {
-    tableName : _model.table || pluralize(changeCase('toLower', name)),
+    tableName : _model.table || pluralize(changeCase.to([ 'toSnake', 'toLower' ], name)),
     paranoid  : _model.paranoid !== undefined ? _model.paranoid : true
   });
 
@@ -116,7 +116,7 @@ module.exports = (name, getModelSetup) => {
       code    : `SEQUELIZE_${ type }_ERROR`,
       message : changeCase.toCapital(err.message),
       data    : {
-        type   : changeCase.toUpper(changeCase.toSnake(err.type)),
+        type   : changeCase.to([ 'toSnake', 'toUpper' ], err.type),
         path   : err.path,
         value  : err.value,
         fields : raw.fields,

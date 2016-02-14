@@ -39,10 +39,12 @@ module.exports = function SequelizeRelay(type, resource, options) {
       break;
     }
     case 'admin' : {
-      relay.admin(options.groupId, resource, payload)
+      relay.admin(options.groupId, resource, payload);
+      break;
     }
     case 'super' : {
       relay.super(resource, payload);
+      break;
     }
     default : {
       relay.emit(resource, payload);
