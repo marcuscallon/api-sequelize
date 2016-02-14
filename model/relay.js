@@ -22,6 +22,9 @@ module.exports = function SequelizeRelay(type, resource, options) {
     resource = this._resource;
   } else {
     resource = resource || this._resource;
+    if (!options) {
+      options = {};
+    }
   }
   switch (options.to) {
     case 'user' : {
@@ -37,6 +40,9 @@ module.exports = function SequelizeRelay(type, resource, options) {
     }
     case 'admin' : {
       relay.admin(options.groupId, resource, payload)
+    }
+    case 'super' : {
+      relay.super(resource, payload);
     }
     default : {
       relay.emit(resource, payload);
