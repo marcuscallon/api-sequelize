@@ -40,7 +40,7 @@ module.exports = (name, getModelSetup) => {
    * @type     Object
    */
   SequelizeModel.prototype._schema = SequelizeModel._schema = sequelize.define(name, changeCase.objectKeys('toCamel', _model.schema), {
-    tableName : _model.table || `${ changeCase('toLower', name) }s`,
+    tableName : _model.table || pluralize(changeCase('toLower', name)),
     paranoid  : _model.paranoid !== undefined ? _model.paranoid : true
   });
 

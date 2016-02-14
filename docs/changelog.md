@@ -7,4 +7,16 @@
  - Added `.sum(field, options)` to model, which returns the sum of a field.
  - Edit `.save()` method on model to return itself.
  - Edit `.update(data)` method on model to return itself.
+ - Edit `.relay(type, [resource], [user])` => `.relay(type, [resource], [options])`, to support core group features.
 
+#### .relay(type, [resource], [options]) example
+
+```js
+model.relay('update', 'foos', {
+  to      : 'user', // user, group, admin
+  userId  : 1,      // only needed when emitting to user
+  groupId : 1       // required for group, and admin. Optional for user.
+                    // when provided for user it will emit to admin channel
+                    // for that group.
+});
+```

@@ -9,32 +9,37 @@ let types      = Bento.Helpers.Type;
  * Relays the instanced data over the connected web sockets.
  * @param  {String} type       The transmission type create|update|delete.
  * @param  {String} [resource] The resource identifier of the relay.
- * @param  {Object} [user]     The user to send private transmission to.
+ * @param  {Object} [options]  The relay options.
  * @return {Void}
  */
-module.exports = function SequelizeRelay(type, resource, user) {
+module.exports = function SequelizeRelay(type, resource, options) {
   let payload = {
     type : type,
     data : this.toJSON()
   };
-
-  // ### Optional Arguments
-
   if (types.isObject(resource)) {
-    user     = resource;
+    options  = resource;
     resource = this._resource;
   } else {
     resource = resource || this._resource;
   }
-
-  // ### Emit
-  // If a user is provided the relay emission is treated as a private
-  // transmission and is only served to the user provided and admins.
-
-  if (user) {
-    relay.user(user.id, resource, payload);
-    relay.admin(resource, payload);
-  } else {
-    relay.emit(resource, payload);
+  switch (options.to) {
+    case 'user' : {
+      relay.user(options.userId, resource, payload);
+      if (options.groupId) {
+        relay.admin(options.groupId, resource, payload);
+      }
+      break;
+    }
+    case 'group' : {
+      relay.group(options.groupId, resource, payload);
+      break;
+    }
+    case 'admin' : {
+      relay.admin(options.groupId, resource, payload)
+    }
+    default : {
+      relay.emit(resource, payload);
+    }
   }
 };
