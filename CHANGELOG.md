@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.6
+
+ - Removed old role setup from bootstrap
+
 ## 1.1.5
 
  - Added `.max(field, options)` to model, which returns the max value of a field.
