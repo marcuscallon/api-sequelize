@@ -18,8 +18,8 @@ module.exports = {
 
   sequelize : {
     host     : 'localhost',
-    database : null,
-    username : null,
+    database : 'bento',
+    username : 'root',
     password : null,
     dialect  : 'mysql',
     pool     : {

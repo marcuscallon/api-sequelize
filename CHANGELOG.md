@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.7
+
+ - Added default values to sequelize configuration for database and user.
+
 ## 1.1.6
 
  - Removed old role setup from bootstrap
