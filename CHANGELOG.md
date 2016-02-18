@@ -1,15 +1,13 @@
 # Changelog
 
-## 1.1.7
+## 1.2.x
+
+ - queryParser is now part of `.find` and `.findOne`
+
+## 1.1.x
 
  - Added default values to sequelize configuration for database and user.
-
-## 1.1.6
-
  - Removed old role setup from bootstrap
-
-## 1.1.5
-
  - Added `.max(field, options)` to model, which returns the max value of a field.
  - Added `.min(field, options)` to model, which returns the min value of a field.
  - Added `.sum(field, options)` to model, which returns the sum of a field.
