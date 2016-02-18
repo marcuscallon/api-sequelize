@@ -1,30 +1,36 @@
 'use strict';
 
-let Relations = require('../helpers').Relations;
-let relay      = Bento.Relay;
-let log        = Bento.Log;
-let changeCase = Bento.ChangeCase;
-let types      = Bento.Type;
+let queryParser = require('../lib/query-parser');
+let relay       = Bento.Relay;
+let types       = Bento.Type;
+let log         = Bento.Log;
 
 /**
  * Finds a list of records based on the provided query options.
- * @method find
- * @param  {Object} options
+ * @param  {Object}  query     The query|options object to use on the sequelize method.
+ * @param  {Boolean} runFilter Run the registered filter on the incoming query.
  * @return {Array}
  */
-module.exports = function *find(options) {
-  let relations = new Relations(this, options);
-  let result    = yield this._schema.findAll(options);
+module.exports = function *find(query, runFilter) {
+  let options = {};
+
+  // ### Filter
+  // If the model has a filter defined we run the provided query through the filter.
+
+  if (runFilter && this._filter) {
+    options = this._filter(queryParser, query);
+  } else {
+    options = query;
+  }
+
+  // ### Find
+  // Runs a sequelize .findAll request on the model _schema.
+
+  let result = yield this._schema.findAll(options);
   if (!result) {
     return null;
   }
-  for (let i = 0, len = result.length; i < len; i++) {
-    let data = result[i].dataValues;
-    if (relations.exists) {
-      relations.prepare(data);
-    }
-    result[i] = new this(data);
-  }
+  result = result.map(res => new this(res.dataValues));
 
   // ### Append Relay
   // Add relay features to the resulting array for easier relay transmissions.
@@ -36,11 +42,10 @@ module.exports = function *find(options) {
 
 /**
  * Sends a data array of object over the relay.
- * @param  {Array}  data
- * @param  {String} type
- * @param  {String} [resource]
- * @param  {Object} [user]
- * @return {Void}
+ * @param  {Array}  data       This is bound internally and is not used when executing the method.
+ * @param  {String} type       The relay type create|update|delete
+ * @param  {String} [resource] Optionaly set if you have a custom resource or uses models resource value.
+ * @param  {Object} [user]     Set when you wish to transmit only to a specific user.
  */
 function sequelizeRelay(data, type, resource, user) {
   let payload = {

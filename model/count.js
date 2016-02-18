@@ -3,7 +3,7 @@
 /**
  * Provides a record count based on the provided query options.
  * @param  {Object} options
- * @return {Int}
+ * @return {Integer}
  */
 module.exports = function *count(options) {
   try {

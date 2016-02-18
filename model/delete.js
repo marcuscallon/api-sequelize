@@ -4,7 +4,6 @@ let moment = require('moment');
 
 /**
  * Deletes a record based on the provided primary key.
- * @method delete
  * @param  {String} [pk]
  * @return {Void}
  */

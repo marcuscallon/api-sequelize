@@ -1,22 +1,31 @@
 'use strict';
 
-let Relations = require('../helpers').Relations;
+let queryParser = require('../lib/query-parser');
 
 /**
- * Retrieves a single record based on the query options provided.
- * @method findOne
- * @param  {Object} options
+ * Retrieves a single record based on the query provided.
+ * @param  {Object}  query     The query|options object to use on the sequelize method.
+ * @param  {Boolean} runFilter Run the registered filter on the incoming query.
  * @return {Model}
  */
-module.exports = function *(options) {
-  let relations = new Relations(this, options);
-  let result    = yield this._schema.findOne(options);
+module.exports = function *(query, runFilter) {
+  let options = {};
+
+  // ### Filter
+  // If the model has a filter defined we run the provided query through the filter.
+
+  if (runFilter && this._filter) {
+    options = this._filter(queryParser, query);
+  } else {
+    options = query;
+  }
+
+  // ### Find
+  // Runs a sequelize .findOne request on the model _schema.
+
+  let result = yield this._schema.findOne(options);
   if (!result) {
     return null;
   }
-  let data = result.dataValues;
-  if (relations.exists) {
-    relations.prepare(data);
-  }
-  return new this(data);
+  return new this(result.dataValues);
 };
