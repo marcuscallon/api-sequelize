@@ -57,13 +57,19 @@ module.exports = (name, getModelSetup) => {
   SequelizeModel._relations = _model.relations;
 
   /**
-   * Attributes that can be provided that is not part of the model schema.
+   * Filter method for query parsing.
+   * @type {Function}
+   */
+  SequelizeModel.prototype._filter = SequelizeModel._filter = _model.filter;
+
+  /**
+   * Fields to allow on .toJSON that is not part of the schema.
    * @property {Array} _attributes
    */
   SequelizeModel.prototype._attributes = SequelizeModel._attributes = _model.attributes || [];
 
   /**
-   * Attributes to remove before returning the model as JSON.
+   * Fields to remove on .toJSON from the schema.
    * @property {Array} _blacklist
    */
   SequelizeModel.prototype._blacklist = _model.blacklist;
