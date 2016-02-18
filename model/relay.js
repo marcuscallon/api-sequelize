@@ -2,8 +2,8 @@
 
 let relay      = Bento.Relay;
 let log        = Bento.Log;
-let changeCase = Bento.Helpers.Case;
-let types      = Bento.Helpers.Type;
+let changeCase = Bento.ChangeCase;
+let types      = Bento.Type;
 
 /**
  * Relays the instanced data over the connected web sockets.

@@ -1,6 +1,6 @@
 'use strict';
 
-let type = Bento.Helpers.Type;
+let type = Bento.Type;
 
 module.exports = class Relations {
 

@@ -2,7 +2,7 @@
 
 let moment = require('moment');
 let error  = Bento.Error;
-let type   = Bento.Helpers.Type;
+let type   = Bento.Type;
 
 /**
  * Performs an update on the sequelize database with the provided data.

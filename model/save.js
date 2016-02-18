@@ -1,6 +1,6 @@
 'use strict';
 
-let changeCase = Bento.Helpers.Case;
+let changeCase = Bento.ChangeCase;
 
 /**
  * Stores a new record in the database with the populated model data.

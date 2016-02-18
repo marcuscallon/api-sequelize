@@ -3,8 +3,8 @@
 let Relations = require('../helpers').Relations;
 let relay      = Bento.Relay;
 let log        = Bento.Log;
-let changeCase = Bento.Helpers.Case;
-let types      = Bento.Helpers.Type;
+let changeCase = Bento.ChangeCase;
+let types      = Bento.Type;
 
 /**
  * Finds a list of records based on the provided query options.

@@ -4,8 +4,8 @@ let Sequelize  = require('sequelize');
 let pluralize  = require('pluralize');
 let sequelize  = Bento.provider('sequelize');
 let error      = Bento.Error;
-let changeCase = Bento.Helpers.ChangeCase;
-let types      = Bento.Helpers.Type;
+let changeCase = Bento.ChangeCase;
+let types      = Bento.Type;
 
 module.exports = (name, getModelSetup) => {
 
