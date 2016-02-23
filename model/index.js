@@ -48,7 +48,7 @@ module.exports = (name, getModelSetup) => {
    * The resource identifier of the object.
    * @property {String} _resource
    */
-  SequelizeModel.prototype._resource = SequelizeModel._resource = _model.resource || pluralize(changeCase.toSnake(name.split('/').pop()));
+  SequelizeModel.prototype._resource = SequelizeModel._resource = _model.resource || pluralize(changeCase.toCamel(name.split('/').pop()));
 
   /**
    * The relation definitions of your model.

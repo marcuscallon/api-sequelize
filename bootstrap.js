@@ -29,6 +29,7 @@ function *verifyConfig() {
     });
   }
   if (!config.host)     { errors.push('host'); }
+  if (!config.port)     { errors.push('port'); }
   if (!config.database) { errors.push('database'); }
   if (!config.username) { errors.push('username'); }
   if (errors.length) {
@@ -47,7 +48,8 @@ function *database() {
   let host = mysql.createConnection({
     host     : config.host,
     user     : config.username,
-    password : config.password
+    password : config.password,
+    port     : config.port
   });
 
   // ### Connection Test
@@ -58,7 +60,7 @@ function *database() {
       if (err) {
         return reject(err);
       }
-      log.info(' - Connection Success!');
+      log.info(' ✔ Connection Success.');
       resolve();
     });
   });
@@ -72,7 +74,7 @@ function *database() {
         if (err) {
           return reject(err);
         }
-        log.info(` - Dropped Database [${ config.database }]`);
+        log.info(` ✔ Dropped Database [${ config.database }]`);
         resolve();
       });
     });
@@ -85,7 +87,7 @@ function *database() {
       if (err) {
         return reject(err);
       }
-      log.info(` - Created Database [${ config.database }]`);
+      log.info(` ✔ Created Database [${ config.database }]`);
       resolve();
     });
   });

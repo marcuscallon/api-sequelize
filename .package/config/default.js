@@ -6,6 +6,7 @@ module.exports = {
    |--------------------------------------------------------------------------------
    |
    | @param {String}  host     Server address
+   | @param {Number}  port     Server port
    | @param {String}  database Name of the database to connect to
    | @param {String}  username Connection username
    | @param {String}  password Connection password
@@ -18,6 +19,7 @@ module.exports = {
 
   sequelize : {
     host     : 'localhost',
+    port     : 3306,
     database : 'bento',
     username : 'root',
     password : null,
