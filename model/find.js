@@ -1,9 +1,10 @@
 'use strict';
 
-let queryParser = require('../lib/query-parser');
-let relay       = Bento.Relay;
-let types       = Bento.Type;
-let log         = Bento.Log;
+let queryParser   = require('../lib/query-parser');
+let parseRelation = require('../lib/relations');
+let relay         = Bento.Relay;
+let types         = Bento.Type;
+let log           = Bento.Log;
 
 /**
  * Finds a list of records based on the provided query options.
@@ -35,10 +36,116 @@ module.exports = function *find(query, runFilter) {
   // ### Append Relay
   // Add relay features to the resulting array for easier relay transmissions.
 
-  result.relay = sequelizeRelay.bind(this, result);
+  result.relay   = sequelizeRelay.bind(this, result);
+  result.with    = relations.bind(this, result);
+  result.hasOne  = shortRelations.bind(result, 'hasOne');
+  result.hasMany = shortRelations.bind(result, 'hasMany');
 
   return result;
 };
+
+function *shortRelations(type, relations) {
+  if (Array.isArray(relations)) {
+    let list = [];
+    for (let i = 0, len = relations.length; i < len; i++) {
+      list.push(parseRelation(type, relations[i], true));
+    }
+    yield this.with(list);
+  } else {
+    yield this.with([ parseRelation(type, relations, true) ]);
+  }
+}
+
+/**
+ * Performs a relations on a array of models.
+ * @param {Array} data
+ * @param {Array} relations
+ */
+function *relations(data, relations) {
+  for (let i = 0, len = relations.length; i < len; i++) {
+    let options = relations[i];
+    let Model   = Bento.model(options.model);
+    let query   = Object.assign({}, options.where);
+
+    // ### Query
+    // Create the relation query.
+
+    for (let key in query) {
+      query[key] = {
+        $in : data.reduce((list, next) => {
+          if (list.indexOf(next[query[key]]) === -1) {
+            list.push(next[query[key]]);
+          }
+          return list;
+        }, [])
+      }
+    }
+
+    // ### Find
+    // Perform a find operation on the requested relations.
+
+    let list = yield Model.find({
+      where : query
+    });
+
+    // ### Data Mapping
+    // Perform an array map where we assign the group based on the related
+    // search results.
+
+    data.map(model => {
+      let res = null;
+      switch (options.relation) {
+        case 'hasOne' : {
+          res = relationHasOne(list, model, options.where);
+          break;
+        }
+        case 'hasMany' : {
+          res = relationHasMany(list, model, options.where);
+          break;
+        }
+      }
+      model[options.as] = res;
+      model._attributes.push(options.as);
+    });
+  }
+}
+
+/**
+ * Returns the one to one relation from a list to the model.
+ * @param  {Array}  list
+ * @param  {Object} model
+ * @param  {Object} query
+ * @return {Object}
+ */
+function relationHasOne(list, model, query) {
+  return list.find(res => {
+    for (let key in query) {
+      if (res[key] !== model[query[key]]) {
+        return false;
+      }
+    }
+    return true;
+  });
+}
+
+/**
+ * Returns a one to many relation from a list to the model.
+ * @param  {Array}  list
+ * @param  {Object} model
+ * @param  {Object} query
+ * @return {Array}
+ */
+function relationHasMany(list, model, query) {
+  return list.reduce((list, next) => {
+    for (let key in query) {
+      if (next[key] !== model[query[key]]) {
+        return list;
+      }
+    }
+    list.push(next);
+    return list;
+  }, []);
+}
 
 /**
  * Sends a data array of object over the relay.

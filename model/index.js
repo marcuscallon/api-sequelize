@@ -44,17 +44,13 @@ module.exports = (name, getModelSetup) => {
     paranoid  : _model.paranoid !== undefined ? _model.paranoid : true
   });
 
+  SequelizeModel.prototype._relatedPK = SequelizeModel._relatedPK = `${ changeCase.toCamel(name) }Id`;
+
   /**
    * The resource identifier of the object.
    * @property {String} _resource
    */
   SequelizeModel.prototype._resource = SequelizeModel._resource = _model.resource || pluralize(changeCase.toCamel(name.split('/').pop()));
-
-  /**
-   * The relation definitions of your model.
-   * @property {Array} _relations
-   */
-  SequelizeModel._relations = _model.relations;
 
   /**
    * Filter method for query parsing.
@@ -86,11 +82,14 @@ module.exports = (name, getModelSetup) => {
 
   // ### Instance Methods
 
-  SequelizeModel.prototype.save   = require('./save');
-  SequelizeModel.prototype.upsert = require('./upsert');
-  SequelizeModel.prototype.update = require('./update');
-  SequelizeModel.prototype.delete = require('./delete');
-  SequelizeModel.prototype.relay  = require('./relay');
+  SequelizeModel.prototype.save    = require('./save');
+  SequelizeModel.prototype.upsert  = require('./upsert');
+  SequelizeModel.prototype.update  = require('./update');
+  SequelizeModel.prototype.delete  = require('./delete');
+  SequelizeModel.prototype.relay   = require('./relay');
+  SequelizeModel.prototype.with    = require('./with');
+  SequelizeModel.prototype.hasOne  = require('./hasOne');
+  SequelizeModel.prototype.hasMany = require('./hasMany');
 
   // ### Custom Methods
 
