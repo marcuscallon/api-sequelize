@@ -1,6 +1,6 @@
 {
   "name": "bentojs-api-sequelize",
-  "version": "1.2.3",
+  "version": "1.2.5",
   "description": "A SQL provider for bentojs api built with sequelize.",
   "author": "Christoffer Rødvik <snapgravy@gmail.com>",
   "contributors": [
@@ -31,7 +31,6 @@
   },
   "bento": {
     "name": "sequelize",
-    "type": "provider",
-    "init": "setup.js"
+    "type": "provider"
   }
 }

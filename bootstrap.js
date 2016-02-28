@@ -12,7 +12,6 @@ module.exports = function *() {
   yield verifyConfig();
   yield database();
   yield groups();
-  yield require('./setup');
 };
 
 /**

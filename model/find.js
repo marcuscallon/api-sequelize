@@ -78,7 +78,7 @@ function *relations(data, relations) {
           }
           return list;
         }, [])
-      }
+      };
     }
 
     // ### Find
