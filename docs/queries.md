@@ -101,4 +101,48 @@ let model = yield Model.findById(1);
 yield model.delete();
 ```
 
+## [With](#with)
+
+With is the relational features that are used by the sequelize provider. Relations are ad-hoc so a model doesn't pre-define its relations, relations are defined when they are needed. Here are the various relational setups.
+
+#### One to One
+
+```
+let model = yield Model.findOne({ ... });
+yield model.with({
+  relation : 'hasOne',
+  model    : 'Foo',
+  as       : 'foo',
+  where    : {
+    id : model.fooId
+  }
+});
+```
+
+Shorthand:
+
+```
+yield model.hasOne(`Foo?id${ model.fooId }=>foo`)
+```
+
+#### One to Many
+
+```
+let model = yield Model.findOne({ ... });
+yield model.with({
+  relation : 'hasMany',
+  model    : 'Foo',
+  as       : 'foo',
+  where    : {
+    id : model.fooId
+  }
+});
+```
+
+Shorthand:
+
+```
+yield model.hasMany(`Foo?id${ model.fooId }=>foo`)
+```
+
 [Back to Index](index.md)
