@@ -122,7 +122,7 @@ yield model.with([{
 Shorthand:
 
 ```
-yield model.hasOne(`Foo?id${ model.fooId }=>foo`)
+yield model.hasOne(`Foo?id=${ model.fooId }=>foo`)
 ```
 
 #### One to Many
@@ -142,7 +142,7 @@ yield model.with([{
 Shorthand:
 
 ```
-yield model.hasMany(`Foo?id${ model.fooId }=>foo`)
+yield model.hasMany(`Foo?id=${ model.fooId }=>foo`)
 ```
 
 [Back to Index](index.md)
