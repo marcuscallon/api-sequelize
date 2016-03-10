@@ -109,14 +109,14 @@ With is the relational features that are used by the sequelize provider. Relatio
 
 ```
 let model = yield Model.findOne({ ... });
-yield model.with({
+yield model.with([{
   relation : 'hasOne',
   model    : 'Foo',
   as       : 'foo',
   where    : {
     id : model.fooId
   }
-});
+}]);
 ```
 
 Shorthand:
@@ -129,14 +129,14 @@ yield model.hasOne(`Foo?id${ model.fooId }=>foo`)
 
 ```
 let model = yield Model.findOne({ ... });
-yield model.with({
+yield model.with([{
   relation : 'hasMany',
   model    : 'Foo',
   as       : 'foo',
   where    : {
     id : model.fooId
   }
-});
+}]);
 ```
 
 Shorthand:
